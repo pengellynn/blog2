@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ripon.adminserver.dao.ArticleMapper">
+  <resultMap id="BaseResultMap" type="com.ripon.adminserver.model.Article">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="author" jdbcType="VARCHAR" property="author" />
+    <result column="date" jdbcType="DATE" property="date" />
+    <result column="summary" jdbcType="VARCHAR" property="summary" />
+    <result column="view" jdbcType="INTEGER" property="view" />
+    <result column="love" jdbcType="INTEGER" property="love" />
+    <result column="sub_category_id" jdbcType="INTEGER" property="subCategoryId" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="category_id" jdbcType="INTEGER" property="categoryId" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.ripon.adminserver.model.Article">
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, title, author, date, summary, view, love, sub_category_id, icon, category_id
+  </sql>
+  <sql id="Blob_Column_List">
+    content
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.ripon.adminserver.model.ArticleExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from article
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.ripon.adminserver.model.ArticleExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from article
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from article
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from article
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ripon.adminserver.model.ArticleExample">
+    delete from article
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ripon.adminserver.model.Article" useGeneratedKeys="true" keyProperty="id">
+    insert into article (id, title, author, 
+      date, summary, view, love, 
+      sub_category_id, icon, category_id, 
+      content)
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, 
+      #{date,jdbcType=DATE}, #{summary,jdbcType=VARCHAR}, #{view,jdbcType=INTEGER}, #{love,jdbcType=INTEGER}, 
+      #{subCategoryId,jdbcType=INTEGER}, #{icon,jdbcType=VARCHAR}, #{categoryId,jdbcType=INTEGER}, 
+      #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ripon.adminserver.model.Article">
+    insert into article
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="author != null">
+        author,
+      </if>
+      <if test="date != null">
+        date,
+      </if>
+      <if test="summary != null">
+        summary,
+      </if>
+      <if test="view != null">
+        view,
+      </if>
+      <if test="love != null">
+        love,
+      </if>
+      <if test="subCategoryId != null">
+        sub_category_id,
+      </if>
+      <if test="icon != null">
+        icon,
+      </if>
+      <if test="categoryId != null">
+        category_id,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null">
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null">
+        #{date,jdbcType=DATE},
+      </if>
+      <if test="summary != null">
+        #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="view != null">
+        #{view,jdbcType=INTEGER},
+      </if>
+      <if test="love != null">
+        #{love,jdbcType=INTEGER},
+      </if>
+      <if test="subCategoryId != null">
+        #{subCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="icon != null">
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ripon.adminserver.model.ArticleExample" resultType="java.lang.Long">
+    select count(*) from article
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update article
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.title != null">
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.author != null">
+        author = #{record.author,jdbcType=VARCHAR},
+      </if>
+      <if test="record.date != null">
+        date = #{record.date,jdbcType=DATE},
+      </if>
+      <if test="record.summary != null">
+        summary = #{record.summary,jdbcType=VARCHAR},
+      </if>
+      <if test="record.view != null">
+        view = #{record.view,jdbcType=INTEGER},
+      </if>
+      <if test="record.love != null">
+        love = #{record.love,jdbcType=INTEGER},
+      </if>
+      <if test="record.subCategoryId != null">
+        sub_category_id = #{record.subCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="record.icon != null">
+        icon = #{record.icon,jdbcType=VARCHAR},
+      </if>
+      <if test="record.categoryId != null">
+        category_id = #{record.categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="record.content != null">
+        content = #{record.content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update article
+    set id = #{record.id,jdbcType=INTEGER},
+      title = #{record.title,jdbcType=VARCHAR},
+      author = #{record.author,jdbcType=VARCHAR},
+      date = #{record.date,jdbcType=DATE},
+      summary = #{record.summary,jdbcType=VARCHAR},
+      view = #{record.view,jdbcType=INTEGER},
+      love = #{record.love,jdbcType=INTEGER},
+      sub_category_id = #{record.subCategoryId,jdbcType=INTEGER},
+      icon = #{record.icon,jdbcType=VARCHAR},
+      category_id = #{record.categoryId,jdbcType=INTEGER},
+      content = #{record.content,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update article
+    set id = #{record.id,jdbcType=INTEGER},
+      title = #{record.title,jdbcType=VARCHAR},
+      author = #{record.author,jdbcType=VARCHAR},
+      date = #{record.date,jdbcType=DATE},
+      summary = #{record.summary,jdbcType=VARCHAR},
+      view = #{record.view,jdbcType=INTEGER},
+      love = #{record.love,jdbcType=INTEGER},
+      sub_category_id = #{record.subCategoryId,jdbcType=INTEGER},
+      icon = #{record.icon,jdbcType=VARCHAR},
+      category_id = #{record.categoryId,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ripon.adminserver.model.Article">
+    update article
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null">
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null">
+        date = #{date,jdbcType=DATE},
+      </if>
+      <if test="summary != null">
+        summary = #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="view != null">
+        view = #{view,jdbcType=INTEGER},
+      </if>
+      <if test="love != null">
+        love = #{love,jdbcType=INTEGER},
+      </if>
+      <if test="subCategoryId != null">
+        sub_category_id = #{subCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="icon != null">
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryId != null">
+        category_id = #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.ripon.adminserver.model.Article">
+    update article
+    set title = #{title,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      date = #{date,jdbcType=DATE},
+      summary = #{summary,jdbcType=VARCHAR},
+      view = #{view,jdbcType=INTEGER},
+      love = #{love,jdbcType=INTEGER},
+      sub_category_id = #{subCategoryId,jdbcType=INTEGER},
+      icon = #{icon,jdbcType=VARCHAR},
+      category_id = #{categoryId,jdbcType=INTEGER},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ripon.adminserver.model.Article">
+    update article
+    set title = #{title,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      date = #{date,jdbcType=DATE},
+      summary = #{summary,jdbcType=VARCHAR},
+      view = #{view,jdbcType=INTEGER},
+      love = #{love,jdbcType=INTEGER},
+      sub_category_id = #{subCategoryId,jdbcType=INTEGER},
+      icon = #{icon,jdbcType=VARCHAR},
+      category_id = #{categoryId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <resultMap id="articleList" type="com.ripon.adminserver.dto.ArticleGeneral">
+    <id column="id" property="id"/>
+    <result column="title" property="title"/>
+    <result column="author" property="author"/>
+    <result column="date" property="date"/>
+    <result column="categoryName" property="categoryName"/>
+    <result column="subCategoryName" property="subCategoryName"/>
+  </resultMap>
+  <select id="selectAllArticleGeneral" resultMap="articleList">
+    select a.id, a.title, a.author, a.date,
+           c.name categoryName,
+           sc.name subCategoryName
+    from article a
+    left join category c
+    on a.category_id = c.id
+    left join sub_category sc
+    on a.sub_category_id = sc.id
+  </select>
+  <!--分步查询文章详情-->
+  <!--<resultMap id="articleDetail" type="com.ripon.adminserver.dto.ArticleDetail">-->
+    <!--<id column="id" property="id"/>-->
+    <!--<result column="title" property="title"/>-->
+    <!--<result column="author" property="author"/>-->
+    <!--<result column="date" property="date"/>-->
+    <!--<result column="view" property="view"/>-->
+    <!--<result column="love" property="love"/>-->
+    <!--<result column="icon" property="icon"/>-->
+    <!--<result column="summary" property="summary"/>-->
+    <!--<result column="content" property="content"/>-->
+    <!--<association property="category"-->
+                 <!--select="com.ripon.adminserver.dao.CategoryMapper.selectByPrimaryKey"-->
+                 <!--column="category_id"/>-->
+    <!--<association property="subCategory"-->
+                 <!--select="com.ripon.adminserver.dao.SubCategoryMapper.selectByPrimaryKey"-->
+                 <!--column="sub_category_id"/>-->
+    <!--<collection property="tags"-->
+                <!--select="com.ripon.adminserver.dao.TagMapper.selectByArticleId"-->
+                <!--column="id"/>-->
+  <!--</resultMap>-->
+  <!--<select id="selectDetailById" resultMap="articleDetail">-->
+    <!--select * from article where id = #{id}-->
+  <!--</select>-->
+  <select id="selectTagIdById" resultType="Integer">
+    select tag_id from article_tag where article_id = #{id}
+  </select>
+  <delete id="deleteTagIdById">
+    delete from article_tag where article_id = #{id}
+  </delete>
+  <insert id="insertTagIdById">
+    insert into article_tag(article_id, tag_id) values 
+    <foreach collection="tagIds" item="tagId" separator=",">
+      (#{id}, #{tagId})
+    </foreach>
+  </insert>
+  <delete id="deleteTagIdByIds">
+      delete from article_tag where article_id in
+      <foreach collection="ids" item="id" separator=",">
+          (#{id})
+      </foreach>
+  </delete>
+  <select id="selectIdByTagId" resultType="Integer">
+    select article_id from article_tag where tag_id = #{tagId}
+  </select>
+</mapper>

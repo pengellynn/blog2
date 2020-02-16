@@ -1,0 +1,50 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>学无止境</title>
+    <meta name="keywords" content="个人博客,ripon" />
+    <meta name="description" content="ripon个人博客" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/css/base.css" rel="stylesheet">
+    <link href="/css/index.css" rel="stylesheet">
+    <link href="/css/m.css" rel="stylesheet">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.easyfader.min.js"></script>
+    <script src="/js/scrollReveal.js"></script>
+    <script src="/js/common.js"></script>
+    <script src="/js/jq-paginator.js"></script>
+    <script src="/js/utils.js"></script>
+    <!--[if lt IE 9]>
+    <script src="/js/modernizr.js"></script>
+    <![endif]-->
+    <script>
+        window.onload=function () {
+            var  url = getCurrentURI() + '/articles'
+            var totalCount = [[${totalCount}]]
+            paginator(totalCount,2,url)
+        }
+    </script>
+</head>
+<body>
+<header th:replace="~{index::header}"></header>
+<div class="pagebg sh"></div>
+<div class="container">
+  <h1 class="t_nav">
+    <a href="/" class="n1">网站首页</a>
+    <a th:href="@{${category.url}}" class="n2">[[${category.name}]]</a>
+    <span>不要轻易放弃。学习成长的路上，我们长路漫漫，只因学无止境。</span>
+  </h1>
+  <!--blogsbox begin-->
+  <div th:replace="~{index::blogsbox}"></div>
+  <!--blogsbox end-->
+  <div class="sidebar" th:fragment="sidebar">
+    <div th:replace="~{index::recommendedArticle}"></div>
+    <div th:replace="~{index::hottestArticle}"></div>
+    <div th:replace="~{index::tagCloud}"></div>
+  </div>
+</div>
+<footer th:replace="~{index::footer}"></footer>
+<a href="#" class="cd-top">Top</a>
+</body>
+</html>

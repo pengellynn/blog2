@@ -1,0 +1,160 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>首页_个人博客网站</title>
+  <meta name="keywords" content="个人博客,ripon" />
+  <meta name="description" content="ripon个人博客"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/css/base.css" rel="stylesheet">
+  <link href="/css/index.css" rel="stylesheet">
+  <link href="/css/m.css" rel="stylesheet">
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/jquery.easyfader.min.js" ></script>
+  <script src="/js/scrollReveal.js"></script>
+  <script src="/js/common.js"></script>
+  <script src="/js/jq-paginator.js"></script>
+  <script src="/js/utils.js"></script>
+  <!--[if lt IE 9]>
+  <script src="/js/modernizr.js"></script>
+  <![endif]-->
+<script th:inline="javascript">
+    window.onload=function () {
+        var totalCount = [[${totalCount}]]
+        paginator(totalCount,2,'/articles')
+    }
+</script>
+</head>
+<body>
+<header th:fragment="header">
+  <!--menu begin-->
+  <div class="menu">
+    <nav class="nav" id="topnav">
+      <h1 class="logo"><a href="http://www.ripon.com">Ripon博客</a></h1>
+        <li th:each="category:${categoryList}">
+          <a th:href="@{${category.url}}">[[${category.name}]]</a>
+          <ul class="sub-nav" th:if="${not #lists.isEmpty(category.getSubCategoryList())}">
+            <li th:each="subCategory:${category.subCategoryList}">
+              <a th:href="@{${subCategory.url}}">[[${subCategory.name}]]</a>
+            </li>
+          </ul>
+        </li>
+      <!--search begin-->
+      <div id="search_bar" class="search_bar">
+        <form  id="searchform" action="/search" method="post" name="searchform">
+          <input class="input" placeholder="想搜点什么呢..." type="text" name="keyboard">
+          <span class="search_ico"></span>
+        </form>
+      </div>
+      <!--search end--> 
+    </nav>
+  </div>
+  <!--menu end-->
+</header>
+<article> 
+  <!--banner begin-->
+ <div class="picsbox">
+  <div class="banner">
+    <div id="banner" class="fader">
+      <li class="slide" ><a href="/" target="_blank"><img src="/images/banner01.jpg"><span class="imginfo">别让这些闹心的套路，毁了你的网页设计!</span></a></li>
+      <li class="slide" ><a href="/" target="_blank"><img src="/images/banner02.jpg"><span class="imginfo">网页中图片属性固定宽度，如何用js改变大小</span></a></li>
+      <li class="slide" ><a href="/" target="_blank"><img src="/images/banner03.jpg"><span class="imginfo">个人博客，属于我的小世界！</span></a></li>
+      <div class="fader_controls">
+        <div class="page prev" data-target="prev">&lsaquo;</div>
+        <div class="page next" data-target="next">&rsaquo;</div>
+        <ul class="pager_list">
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!--banner end-->
+  <div class="toppic">
+    <li><a href="/" target="_blank"> <i><img src="/images/toppic01.jpg"></i>
+      <h2>别让这些闹心的套路，毁了你的网页设计!</h2>
+      <span>学无止境</span></a>
+    </li>
+    <li><a href="/" target="_blank"><i><img src="/images/zd01.jpg"></i>
+      <h2>个人博客，属于我的小世界！</h2>
+      <span>学无止境</span></a>
+    </li>
+  </div>
+  </div>
+  <div class="blank"></div>
+  <!--blogsbox begin-->
+  <div class="blogsbox" th:fragment="blogsbox">
+    <div id="blogsBox">
+      <div class="blogs" data-scroll-reveal="enter bottom over 1s" th:each="article:${newArticles}" th:fragment="articleList">
+        <h3 class="blogtitle"><a th:href="@{/article/{id}(id=${article.id})}" target="_blank">[[${article.title}]]</a></h3>
+        <span class="blogpic"><a th:href="@{/article/{id}(id=${article.id})}" title="${article.title}"><img th:src="${article.icon}" alt=""></a></span>
+        <p class="blogtext">[[${article.summary}]]</p>
+        <div class="bloginfo">
+          <ul>
+            <li class="author"><a href="/">[[${article.author}]]</a></li>
+            <li class="lmname"><a href="/">[[${article.category.name}]]</a></li>
+            <li class="timer">[[${article.date}]]</li>
+            <li class="view"><span>[[${article.view}]]</span>已阅读</li>
+            <li class="like">[[${article.like}]]</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="pagelist" id="pageList"></div>
+  </div>
+  <!--blogsbox end-->
+  <div class="sidebar">
+    <div class="tuijian" th:fragment="recommendedArticle">
+      <h2 class="hometitle">推荐文章</h2>
+      <ul class="tjpic">
+        <i><img th:src="${recommendedArticles.getContent()[0].icon}"></i>
+        <p><a th:href="@{/article/{id}(id=${recommendedArticles.getContent()[0].id})}"></a>[[${recommendedArticles.getContent()[0].title}]]</p>
+      </ul>
+      <ul class="sidenews">
+        <li th:each="article,iterStat:${recommendedArticles}" th:if="${iterStat.index}>0">
+          <i><img th:src="${article.icon}"></i>
+          <p><a th:href="@{/article/{id}(id=${article.id})}">[[${article.title}]]</a></p>
+          <span>[[${article.date}]]</span>
+        </li>
+      </ul>
+    </div>
+    <div class="tuijian" th:fragment="hottestArticle">
+      <h2 class="hometitle">点击排行</h2>
+      <ul class="tjpic">
+        <i><img th:src="${hottestArticles.getContent()[0].icon}"></i>
+        <p><a th:href="@{/article/{id}(id=${hottestArticles.getContent()[0].id})}">[[${hottestArticles.getContent()[0].title}]]</a></p>
+      </ul>
+      <ul class="sidenews">
+        <li th:each="article,iterStat:${hottestArticles}" th:if="${iterStat.index}>0">
+          <i><img th:src="@{${article.icon}}"></i>
+          <p><a th:href="@{/article/{id}(id=${article.id})}">[[${article.title}]]</a></p>
+          <span>[[${article.date}]]</span>
+        </li>
+      </ul>
+    </div>
+    <div class="cloud" th:fragment="tagCloud">
+      <h2 class="hometitle">标签云</h2>
+      <ul>
+        <a th:each="tag:${tagList}" th:href="@{#}" th:onclick="getArticleByTag('/tag/'+[[${tag.id}]])">[[${tag.name}]]</a>
+      </ul>
+    </div>
+    <div class="links">
+      <h2 class="hometitle">友情链接</h2>
+      <ul>
+        <li><a href="https://github.com/ghsky123" target="_blank">github</a></li>
+        <li><a href="http://www.yangqq.com" target="_blank">杨青博客</a></li>
+      </ul>
+    </div>
+    <div class="guanzhu" id="follow-us">
+      <h2 class="hometitle">Contact me</h2>
+      <ul>
+        <li class="qq"><span>QQ号</span>2904055745</li>
+        <li class="email"><span>邮箱帐号</span>2904055745@qq.com</li>
+      </ul>
+    </div>
+  </div>
+</article>
+<footer th:fragment="footer">
+  <p>Design by <a href="http://www.ripon.com" target="_blank">Ripon个人博客</a> <a href="/"></a></p>
+</footer>
+<a href="#" class="cd-top">Top</a>
+</body>
+</html>

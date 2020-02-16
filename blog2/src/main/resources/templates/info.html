@@ -1,0 +1,78 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>文章详情</title>
+  <meta name="keywords" content="个人博客,ripon" />
+  <meta name="description" content="ripon个人博客" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/css/base.css" rel="stylesheet">
+  <link href="/css/index.css" rel="stylesheet">
+  <link href="/css/m.css" rel="stylesheet">
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/jquery.easyfader.min.js" ></script>
+  <script src="/js/scrollReveal.js"></script>
+  <script src="/js/common.js"></script>
+  <script src="/js/jq-paginator.js"></script>
+  <script src="/js/utils.js"></script>
+  <!--[if lt IE 9]>
+  <script src="/js/modernizr.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header th:replace="~{index::header}"></header>
+<article>
+  <h1 class="t_nav">
+    <a href="/" class="n1">网站首页</a>
+    <a th:href="@{${category.url}}" class="n2">[[${category.name}]]</a>
+    <!--<span>您现在的位置是：首页 > 慢生活 > 程序人生</span>-->
+  </h1>
+  <div class="infosbox">
+    <div class="newsview">
+      <h3 class="news_title">[[${article.title}]]</h3>
+      <div class="bloginfo">
+        <ul>
+          <li class="author"><a th:href="@{/}">[[${article.author}]]</a></li>
+          <li class="lmname"><a th:href="@{${category.url}}">[[${article.category.name}]]</a></li>
+          <li class="timer">[[${article.date}]]</li>
+          <li class="view">[[${article.view}]]</li>
+          <li class="like">[[${article.like}]]</li>
+        </ul>
+      </div>
+      <div class="tags"><span th:each="tag:${article.tags}"><a th:href="@{/tag/{id}(id=${tag.id})}" target="_blank">[[${tag.name}]]</a> &nbsp;</span></div>
+      <div class="news_about"><strong>简介</strong>[[${article.summary}]]</div>
+      <div class="news_con">[[${article.content}]]</div>
+    </div>
+
+    <div class="nextinfo">
+      <p>上一篇：<a th:href="@{/article/{id}(id=${preArticle.id})}">[[${preArticle.title}]]</a></p>
+      <p>下一篇：<a th:href="@{/article/{id}(id=${nextArticle.id})}">[[${nextArticle.title}]]</a></p>
+    </div>
+    <div class="otherlink">
+      <h2>相关文章</h2>
+      <ul>
+        <li th:each="article:${relatedArticles}"><a th:href="@{/article/{id}(id=${article.id})}" th:title="${article.title}">[[${article.title}]]</a></li>
+      </ul>
+    </div>
+    <div class="news_pl">
+      <h2>文章评论</h2>
+      <ul>
+        <div class="gbko"> </div>
+      </ul>
+    </div>
+  </div>
+  <div class="sidebar">
+    <div th:replace="~{index::recommendedArticle}"></div>
+    <div th:replace="~{index::hottestArticle}"></div>
+    <div class="cloud" th:fragment="tagCloud">
+      <h2 class="hometitle">标签云</h2>
+      <ul>
+        <a th:each="tag:${article.tags}" th:href="@{/tag/{id}(id=${tag.id})}">[[${tag.name}]]</a>
+      </ul>
+    </div>
+  </div>
+</article>
+<footer th:replace="~{index::footer}"></footer>
+<a href="#" class="cd-top">Top</a>
+</body>
+</html>

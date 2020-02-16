@@ -1,0 +1,48 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>首页_个人博客网站</title>
+  <meta name="keywords" content="个人博客,ripon" />
+  <meta name="description" content="ripon个人博客" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/css/base.css" rel="stylesheet">
+  <link href="/css/index.css" rel="stylesheet">
+  <link href="/css/m.css" rel="stylesheet">
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/jquery.easyfader.min.js" ></script>
+  <script src="/js/scrollReveal.js"></script>
+  <script src="/js/common.js"></script>
+  <script src="/js/jq-paginator.js"></script>
+  <script src="/js/utils.js"></script>
+  <!--[if lt IE 9]>
+  <script src="/js/modernizr.js"></script>
+  <![endif]-->
+  <script>
+      window.onload=function () {
+          var totalCount = [[${totalCount}]]
+          paginator(totalCount, 2, '/time/articleList')
+      }
+  </script>
+</head>
+<body>
+<header th:replace="~{index::header}"></header>
+<div class="pagebg timer"> </div>
+<div class="container">
+  <h1 class="t_nav">
+    <a href="/" class="n1">网站首页</a>
+    <a th:href="@{${category.url}}" class="n2">[[${category.name}]]</a>
+    <span>时光飞逝，机会就在我们眼前，何时找到了灵感，就要把握机遇，我们需要智慧和勇气去把握机会。</span>
+  </h1>
+  <div class="timebox">
+  <div id="blogsBox">
+    <ul id="list" th:fragment="articleList">
+      <li th:each="article:${articles}"><span>[[${article.date}]]</span><a th:href="@{/article/{id}(id=${article.id})}" th:title="${article.title}">[[${article.title}]]</a></li>
+    </ul>
+  </div>
+  <div class="pagelist" id="pageList"></div>
+</div>
+<footer th:replace="~{index::footer}"></footer>
+<a href="#" class="cd-top">Top</a>
+</body>
+</html>
